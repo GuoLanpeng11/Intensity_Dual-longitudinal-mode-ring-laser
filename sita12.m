@@ -1,0 +1,97 @@
+function asita12=sita12
+omiga0=3e8/632.8e-9;
+lamda0=632.8e-9;
+omiga1=omiga0+876e6;
+lamda1=3e8/omiga1;
+nu=omiga0;
+ra=15.5e6;
+rb=41e6;
+r=128e6;
+B=1.2;
+Q=omiga0/1200e6;
+nu1=-2000e6+(omiga0+omiga1)/2:20e6:2000e6+(omiga0+omiga1)/2;
+nu2=nu1+15e6;
+nu3=nu1+640e6;
+nu4=nu3+15e6;
+k1=2*pi/lamda0;
+u1=1200e6/k1;
+k2=2*pi/lamda1;
+u2=1144e6/k2;
+Ra=ra.*ones(1,201);
+Rb=rb.*ones(1,201);
+R=r.*ones(1,201);
+
+av11=complex(R,omiga0-nu1);
+av12=ra;
+av13=complex(R,omiga0-nu2);
+av21=av11;
+av22=av12;
+av23=complex(R,nu2-omiga0);
+av31=av11;
+av32=rb;
+av33=av23;
+av41=av11;
+av42=av32;
+av43=av13;
+aT11=sqrt(pi)*2i.*(av12.*(av11+av13)).^(-1);
+aT22=0;%-1/av22.*((Z(av21)-Z(av23))./(av21-av23));
+aT32=0;%-1/av32.*((Z(av31)-Z(av33))./(av31-av33));
+aT41=sqrt(pi)*2i.*(av42.*(av41+av43)).^(-1);
+i1sita1122=aT11+aT22+aT32+aT41;
+
+
+% bv11=complex(R,omiga0-nu1);
+% bv12=complex(Ra,nu2-nu1);
+% bv13=complex(R,omiga0-nu1);
+% bv21=bv11;
+% bv22=bv12;
+% bv23=complex(R,nu2-omiga0);
+% bv31=bv11;
+% bv32=complex(Rb,nu2-nu1);
+% bv33=bv23;
+% bv41=bv11;
+% bv42=bv32;
+% bv43=bv13;
+% bT13=0.5.*1./(bv11-bv12/2).*((-2/(k1*u1).*(bv11./(k1*u1).*Z(bv11)-1i))-(Z(bv13)-Z(bv12/2))./(bv13-bv12/2));
+% bT23=0.5.*1./(bv21-bv22/2).*((Z(bv23)-Z(bv21))./(bv23-bv21)-(Z(bv23)-Z(bv22/2))./(bv23-bv22/2));
+% bT33=0.5.*1./(bv31-bv32/2).*((Z(bv33)-Z(bv31))./(bv33-bv31)-(Z(bv33)-Z(bv32/2))./(bv33-bv32/2));
+% bT43=0.5.*1./(bv41-bv42/2).*((-2/(k1*u1).*(bv41./(k1*u1).*Z(bv41)-1i))-(Z(bv43)-Z(bv42/2))./(bv43-bv42/2));
+i1sita1221=0;%bT13+bT23+bT33+bT43;
+
+%Í¬Î»ËØ2
+cv11=complex(R,omiga1-nu1);
+cv13=complex(R,omiga1-nu2);
+cv21=cv11;
+cv23=complex(R,nu2-omiga1);
+cv31=cv11;
+cv33=cv23;
+cv41=cv11;
+cv43=cv13;
+cT11=sqrt(pi)*2i.*(cv12.*(cv11+cv13)).^(-1);
+cT22=0;%-1/ra.*((Z1(cv21)-Z1(cv23))./(cv21-cv23));
+cT32=0;%-1/rb.*((Z1(cv31)-Z1(cv33))./(cv21-cv23));
+cT41=sqrt(pi)*2i.*(cv42.*(cv41+cv43)).^(-1);
+i2sita1122=cT11+cT22+cT32+cT41;
+
+% dv11=complex(R,omiga1-nu1);
+% dv12=complex(Ra,nu2-nu1);
+% dv13=complex(R,omiga1-nu1);
+% dv21=dv11;
+% dv22=dv12;
+% dv23=complex(R,nu2-omiga1);
+% dv31=dv11;
+% dv32=complex(Rb,nu2-nu1);
+% dv33=dv23;
+% dv41=dv11;
+% dv42=dv32;
+% dv43=dv13;
+% dT13=0.5.*1./(dv11-dv12/2).*((-2/(k2*u2).*(dv11./(k2*u2).*Z1(dv11)-1i))-(Z1(dv13)-Z1(dv12/2))./(dv13-dv12/2));
+% dT23=0.5.*1./(dv21-dv22/2).*((Z1(dv23)-Z1(dv21))./(dv23-dv21)-(Z1(dv23)-Z1(dv22/2))./(dv23-dv22/2));
+% dT33=0.5.*1./(dv31-dv32/2).*((Z1(dv33)-Z1(dv31))./(dv33-dv31)-(Z1(dv33)-Z1(dv32/2))./(dv33-dv32/2));
+% dT43=0.5.*1./(dv41-dv42/2).*((-2/(k2*u2).*(dv41./(k2*u2).*Z1(dv41)-1i))-(Z1(dv43)-Z1(dv42/2))./(dv43-dv42/2));
+i2sita1221=0;%dT13+dT23+dT33+dT43;
+
+i1sita12=imag(i1sita1122+i1sita1221);
+i2sita12=imag(i2sita1122+i2sita1221);
+asita12=0.25*ra*rb*nu*B/(Q*imag(Z(r))).*(0.53.*i1sita12+0.47.*i2sita12);
+end
